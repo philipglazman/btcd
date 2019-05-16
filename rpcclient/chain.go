@@ -594,6 +594,33 @@ func (c *Client) EstimateFee(numBlocks int64) (float64, error) {
 	return c.EstimateFeeAsync(numBlocks).Receive()
 }
 
+type FutureEstimateSmartFeeResult chan *response
+
+func (r FutureEstimateSmartFeeResult) Receive() (float64, error) {
+	res, err := receiveFuture(r)
+	if err != nil {
+		return -1, err
+	}
+
+	// Unmarshal result as a getinfo result object.
+	var fee float64
+	err = json.Unmarshal(res, &fee)
+	if err != nil {
+		return -1, err
+	}
+
+	return fee, nil
+}
+
+func (c *Client) EstimateSmartFeeAsync(numBlocks int64) FutureEstimateSmartFeeResult {
+	cmd := btcjson.NewEstimateFeeCmd(numBlocks)
+	return c.sendCmd(cmd)
+}
+
+func (c *Client) EstimateSmartFee(numBlocks int64) (float64,error) {
+	return c.EstimateSmartFeeAsync(numBlocks).Receive()
+}
+
 // FutureVerifyChainResult is a future promise to deliver the result of a
 // VerifyChainAsync, VerifyChainLevelAsyncRPC, or VerifyChainBlocksAsync
 // invocation (or an applicable error).
