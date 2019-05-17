@@ -199,6 +199,13 @@ type GetMempoolInfoResult struct {
 	Bytes int64 `json:"bytes"`
 }
 
+// EstimateSmartFeeResult models the data returned from the estimatesmartfee command.
+type EstimateSmartFeeResult struct {
+	Errors []string `json:"errors"`
+	Blocks int      `json:"blocks"`
+	FeeRate float64   `json:"feerate"`
+}
+
 // NetworksResult models the networks data from the getnetworkinfo command.
 type NetworksResult struct {
 	Name                      string `json:"name"`
