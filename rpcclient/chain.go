@@ -613,7 +613,7 @@ func (r FutureEstimateSmartFeeResult) Receive() (float64, error) {
 }
 
 func (c *Client) EstimateSmartFeeAsync(numBlocks int64) FutureEstimateSmartFeeResult {
-	cmd := btcjson.NewEstimateFeeCmd(numBlocks)
+	cmd := btcjson.NewEstimateSmartFeeCmd(numBlocks)
 	return c.sendCmd(cmd)
 }
 
