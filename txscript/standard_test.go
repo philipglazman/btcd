@@ -1045,6 +1045,12 @@ var scriptClassTests = []struct {
 		script: "0 DATA_32 0x9f96ade4b41d5433f4eda31e1738ec2b36f6e7d1420d94a6af99801a88f7f7ff",
 		class:  WitnessV0ScriptHashTy,
 	},
+	{
+		// A pay to taproot script.
+		name: "Pay to Taproot",
+		script: "1 DATA_32 0xa5ba0871796eb49fb4caa6bf78e675b9455e2d66e751676420f8381d5dda8951",
+		class: TaprootTy,
+	},
 }
 
 // TestScriptClass ensures all the scripts in scriptClassTests have the expected

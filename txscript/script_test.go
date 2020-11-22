@@ -4213,6 +4213,22 @@ func TestIsPayToWitnessPubKeyHash(t *testing.T) {
 	}
 }
 
+// TestIsPayToTaproot ensures the IsPayToTaproot function
+// returns the expected results for all the scripts in scriptClassTests.
+func TestIsPayToTaproot(t *testing.T) {
+	t.Parallel()
+
+	for _, test := range scriptClassTests {
+		script := mustParseShortForm(test.script)
+		shouldBe := (test.class == TaprootTy)
+		p2tr := IsPayToTaproot(script)
+		if p2tr != shouldBe {
+			t.Errorf("%s: expected p2tr %v, got %v", test.name,
+				shouldBe, p2tr)
+		}
+	}
+}
+
 // TestHasCanonicalPushes ensures the canonicalPush function properly determines
 // what is considered a canonical push for the purposes of removeOpcodeByData.
 func TestHasCanonicalPushes(t *testing.T) {

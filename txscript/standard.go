@@ -59,6 +59,7 @@ const (
 	MultiSigTy                               // Multi signature.
 	NullDataTy                               // Empty data-only (provably prunable).
 	WitnessUnknownTy                         // Witness unknown
+	TaprootTy 								 // Pay to taproot.
 )
 
 // scriptClassToName houses the human-readable strings which describe each
@@ -73,6 +74,7 @@ var scriptClassToName = []string{
 	MultiSigTy:            "multisig",
 	NullDataTy:            "nulldata",
 	WitnessUnknownTy:      "witness_unknown",
+	TaprootTy: 			   "witness_v1_taproot",
 }
 
 // String implements the Stringer interface by returning the name of
@@ -175,6 +177,8 @@ func typeOfScript(pops []parsedOpcode) ScriptClass {
 		return MultiSigTy
 	} else if isNullData(pops) {
 		return NullDataTy
+	} else if isTaproot(pops) {
+		return TaprootTy
 	}
 	return NonStandardTy
 }
@@ -363,6 +367,7 @@ func CalcScriptInfo(sigScript, pkScript []byte, witness wire.TxWitness,
 		si.SigOps = GetWitnessSigOpCount(sigScript, pkScript, witness)
 		si.NumInputs = len(witness)
 
+		// todo
 	default:
 		si.SigOps = getSigOpCount(pkPops, true)
 
